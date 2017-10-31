@@ -1,7 +1,8 @@
 #ifndef __MYSTRING_H__
 #define __MYSTRING_H__
-#include <cstdlib>
-#include <cstring>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "utils/utils.h"
 
 class MyString

@@ -154,7 +154,7 @@ public:
 	*
 	* @param[in]  item   item to be inserted to the end of this array
 	*/
-	void push_back(const T& item) {
+	void push_back(const T item) {
 		if (m_use_count == m_total_count) {
 			resize(m_total_count << 1);
 		}

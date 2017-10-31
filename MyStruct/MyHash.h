@@ -90,7 +90,7 @@ public:
 	}
 
 	/*------------ Modifiers Related ------------*/
-	void insert(const char* key, V& value) {
+	void insert(const char* key, V value) {
 		HashNode *l_node = query(key);
 		if (l_node == NULL) {
 			HashNode *l_node = get_free_node();
