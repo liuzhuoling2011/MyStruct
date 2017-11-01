@@ -118,6 +118,7 @@ private:
 		m_data = new_data;
 		m_first_pos = m_data;
 		m_last_pos = m_data + m_use_count;
+		m_total_count = count;
 	}
 
 	void reset() {

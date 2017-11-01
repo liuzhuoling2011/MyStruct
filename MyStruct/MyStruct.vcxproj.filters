@@ -50,8 +50,5 @@
     <ClInclude Include="utils\utils.h">
       <Filter>头文件\utils</Filter>
     </ClInclude>
-    <ClInclude Include="MyQueue.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

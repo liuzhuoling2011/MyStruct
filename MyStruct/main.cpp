@@ -2,6 +2,7 @@
 #include "MyArray.h"
 #include "MyHash.h"
 #include "MyString.h"
+#include "MyQueue.h"
 #include "test/test_common.h"
 
 void CHECK(bool flag);
@@ -10,6 +11,8 @@ void test_MyArray_struct_type();
 void test_MyHash_base_type();
 void test_MyHash_base_type2();
 void test_MyHash_struct_type();
+void test_MyString();
+void test_MyQueue();
 
 int main()
 {
@@ -17,7 +20,30 @@ int main()
 	test_MyArray_struct_type();
 	test_MyHash_base_type();
 	test_MyHash_base_type2();
-	test_MyHash_struct_type();*/
+	test_MyHash_struct_type();
+	test_MyString(); */
+	test_MyQueue();
+	return 0;
+}
+
+#define CHECK(flag) if((flag) == false) printf("line %d has error, please check!\n", __LINE__)
+
+void test_MyQueue() {
+	MyQueue<int> queue;
+	for (int i=0; i<2048; i++) {
+		queue.push(i);
+	}
+	for (int i = 0; i<1024; i++) {
+		queue.pop();
+	}
+	for (int i = 0; i<1024; i++) {
+		queue.push(i);
+	}
+	int j = queue.front();
+	j = queue.back();
+}
+
+void test_MyString() {
 	MyString a("jojoaini~");
 	MyString b(a);
 	MyString c = b;
@@ -28,10 +54,7 @@ int main()
 	c[5] = '*';
 	printf("%s\n%d\n", c.c_str(), (int)(&c[5] - &c[0]));
 	printf("%s\n", c.find("aini"));
-	return 0;
 }
-
-#define CHECK(flag) if((flag) == false) printf("line %d has error, please check!\n", __LINE__)
 
 void test_MyArray_base_type() {
 	MyArray<int> my_test(10);
