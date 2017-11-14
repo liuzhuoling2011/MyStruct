@@ -38,6 +38,42 @@ public:
 		list_t free_link;
 		list_t used_link;
 	};
+	class Iterator {
+	public:
+		Iterator(HashNode& node) {
+			first = node.key;
+			second = &node.value;
+			m_cur_pos = &node.used_link;
+		}
+		Iterator(Iterator& iter) {
+			first = iter.key;
+			second = iter.value;
+			m_cur_pos = iter.used_link;
+		}
+		void operator = (Iterator& iter) {
+			first = iter.key;
+			second = iter.value;
+			m_cur_pos = iter.used_link;
+		}
+		bool operator == (HashNode& node) {
+			return m_cur_pos == &node.used_link;
+		}
+		bool operator != (HashNode& node) {
+			return m_cur_pos != &node.used_link;
+		}
+		Iterator operator ++ () {
+			Iterator temp = *this;
+			/*list_t* next = m_cur_pos->prev;
+			HashNode* node = list_entry(next, HashNode, used_link);
+			first = node->key;
+			second = &(node->value);
+			m_cur_pos = next;*/
+			return temp;
+		}
+		char *first;
+		V    *second;
+		list_t *m_cur_pos = NULL;
+	};
 
 public:
 	MyHash(size_t size = MAX_HASH_SIZE) {
@@ -87,6 +123,14 @@ public:
 		if (l_node == NULL)
 			return false;
 		return true;
+	}
+
+	HashNode& begin() {
+		return *list_entry(m_used_head.prev, HashNode, used_link);
+	}
+
+	HashNode& end() {
+		return *list_entry(m_used_head.next, HashNode, used_link);
 	}
 
 	/*------------ Modifiers Related ------------*/

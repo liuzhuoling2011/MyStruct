@@ -120,6 +120,7 @@
   <ItemGroup>
     <ClInclude Include="MyArray.h" />
     <ClInclude Include="MyHash.h" />
+    <ClInclude Include="MyQueue.h" />
     <ClInclude Include="MyString.h" />
     <ClInclude Include="test\test_common.h" />
     <ClInclude Include="utils\list.h" />

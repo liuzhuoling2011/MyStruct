@@ -17,12 +17,12 @@ void test_MyQueue();
 int main()
 {
 	/*test_MyArray_base_type();
-	test_MyArray_struct_type();
+	test_MyArray_struct_type();*/
 	test_MyHash_base_type();
-	test_MyHash_base_type2();
+	/*test_MyHash_base_type2();
 	test_MyHash_struct_type();
-	test_MyString(); */
-	test_MyQueue();
+	test_MyString();*/
+	//test_MyQueue();
 	return 0;
 }
 
@@ -201,11 +201,17 @@ void test_MyHash_base_type() {
 	while (table.next_used_node(key, &value)) {
 		printf("%s %d\n", key, value);
 	}
+
 	table.clear();
 
 	for (int i = 0; i < 5; i++) {
 		int value = i * i;
 		table.insert(origin_data[i], value);
+	}
+
+
+	for (MyHash<int>::Iterator iter = table.begin(); iter != table.end(); iter++) {
+		printf("dsa");
 	}
 
 	CHECK(table.size() == 5);
