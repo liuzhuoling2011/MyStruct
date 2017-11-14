@@ -40,35 +40,39 @@ public:
 	};
 	class Iterator {
 	public:
+		Iterator(){}
 		Iterator(HashNode& node) {
 			first = node.key;
 			second = &node.value;
 			m_cur_pos = &node.used_link;
 		}
 		Iterator(Iterator& iter) {
-			first = iter.key;
-			second = iter.value;
-			m_cur_pos = iter.used_link;
+			first = iter.first;
+			second = iter.second;
+			m_cur_pos = iter.m_cur_pos;
+		}
+		void operator = (HashNode& node) {
+			first = node.key;
+			second = &node.value;
+			m_cur_pos = &node.used_link;
 		}
 		void operator = (Iterator& iter) {
-			first = iter.key;
-			second = iter.value;
-			m_cur_pos = iter.used_link;
+			first = iter.first;
+			second = iter.second;
+			m_cur_pos = iter.m_cur_pos;
 		}
-		bool operator == (HashNode& node) {
-			return m_cur_pos == &node.used_link;
+		bool operator == (Iterator& iter) {
+			return m_cur_pos == iter.m_cur_pos;
 		}
-		bool operator != (HashNode& node) {
-			return m_cur_pos != &node.used_link;
+		bool operator != (Iterator& iter) {
+			return m_cur_pos != iter.m_cur_pos;
 		}
-		Iterator operator ++ () {
-			Iterator temp = *this;
-			/*list_t* next = m_cur_pos->prev;
+		void operator ++ (int) {
+			list_t* next = m_cur_pos->prev;
 			HashNode* node = list_entry(next, HashNode, used_link);
 			first = node->key;
 			second = &(node->value);
-			m_cur_pos = next;*/
-			return temp;
+			m_cur_pos = next;
 		}
 		char *first;
 		V    *second;
@@ -94,7 +98,13 @@ public:
 	}
 
 	V& operator[] (const char* key) {
-		return at(key);
+		if(exist(key)) {
+			return at(key);
+		} else {
+			V& freenode = next_free_node();
+			insert_current_node(key);
+			return freenode;
+		}
 	}
 
 	/*------------ Capacity Related ------------*/
@@ -125,12 +135,16 @@ public:
 		return true;
 	}
 
-	HashNode& begin() {
-		return *list_entry(m_used_head.prev, HashNode, used_link);
+	Iterator& begin() {
+		HashNode *l_node = list_entry(m_used_head.prev, HashNode, used_link);
+		m_iterator = *l_node;
+		return m_iterator;
 	}
 
-	HashNode& end() {
-		return *list_entry(m_used_head.next, HashNode, used_link);
+	Iterator& end() {
+		HashNode *l_node = list_entry(m_used_head.prev->next, HashNode, used_link);
+		m_iterator = *l_node;
+		return m_iterator;
 	}
 
 	/*------------ Modifiers Related ------------*/
@@ -178,30 +192,13 @@ public:
 		}
 	}
 
-	void init_iterator() {
-		count_ = 0;
-		m_cur_pos = m_used_head.prev;
-	}
-
-	bool next_used_node(char* key, V* value) {
-		if (m_cur_pos != &m_used_head) {
-			//printf("m_cur_pos: %p  &m_used_head: %p  m_cur_pos->pre: %p  m_cur_pos->next: %p  ", m_cur_pos, &m_used_head, m_cur_pos->prev, m_cur_pos->next);
-			HashNode *l_node = list_entry(m_cur_pos, HashNode, used_link);
-			m_cur_pos = m_cur_pos->prev;
-			strlcpy(key, l_node->key, HASH_KEY_SIZE);
-			*value = l_node->value;
-			return true;
-		}
-		return false;
-	}
-
 	V& next_free_node() {
 		HashNode *l_node = get_free_node();
 		m_cur_free_node = l_node;
 		return l_node->value;
 	}
 
-	void insert_exist_node(const char* key) {
+	void insert_current_node(const char* key) {
 		HashNode *l_node = query(key);
 		if (l_node == NULL) {
 			size_t hash_value = get_hash_value(key);
@@ -237,7 +234,7 @@ private:
 
 		for (size_t i = 0; i < m_hash_size; i++) {
 			m_cur_free_node = &m_data[i];
-			insert_exist_node(m_cur_free_node->key);
+			insert_current_node(m_cur_free_node->key);
 		}
 
 		for (size_t i = m_hash_size; i < 2 * m_hash_size; i++) {
@@ -283,6 +280,7 @@ private:
 	list_t  m_free_head;
 	list_t  m_used_head;
 	list_t *m_hash_head = NULL;
+	Iterator m_iterator;
 	HashNode *m_cur_free_node = NULL; // uesd for high performance
 	HashNode *m_data = NULL;
 };

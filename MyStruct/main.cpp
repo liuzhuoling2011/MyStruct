@@ -19,8 +19,8 @@ int main()
 	/*test_MyArray_base_type();
 	test_MyArray_struct_type();*/
 	test_MyHash_base_type();
-	/*test_MyHash_base_type2();
-	test_MyHash_struct_type();
+	//test_MyHash_base_type2();
+	/*test_MyHash_struct_type();
 	test_MyString();*/
 	//test_MyQueue();
 	return 0;
@@ -178,7 +178,7 @@ void test_MyArray_struct_type() {
 }
 
 void test_MyHash_base_type() {
-	MyHash<int> table = MyHash<int>(30);
+	MyHash<int> table(30);
 
 	for (int i = 0; i < 10; i++) {
 		char* key = get_random_char(6);
@@ -191,30 +191,24 @@ void test_MyHash_base_type() {
 	CHECK(table.empty());
 
 	for (int i = 0; i<5; i++) {
-		char* key = "key";
+		char* key = "key";	 //repeat check
 		table.insert(key, i);
 	}
 	CHECK(table.size() == 1);
-	table.init_iterator();
-	char key[256];
-	int value;
-	while (table.next_used_node(key, &value)) {
-		printf("%s %d\n", key, value);
+
+	for (auto iter = table.begin(); iter != table.end(); iter++) {
+		printf("%s %d\n", iter.first, *iter.second);
 	}
 
 	table.clear();
 
+	table["lzl"] = 5299;
 	for (int i = 0; i < 5; i++) {
 		int value = i * i;
 		table.insert(origin_data[i], value);
 	}
 
-
-	for (MyHash<int>::Iterator iter = table.begin(); iter != table.end(); iter++) {
-		printf("dsa");
-	}
-
-	CHECK(table.size() == 5);
+	CHECK(table.size() == 6);
 
 	for (int i = 0; i < 5; i++) {
 		CHECK(table[origin_data[i]] == i*i);
@@ -222,10 +216,10 @@ void test_MyHash_base_type() {
 
 	table.erase("abcde");
 	CHECK(table.exist("abcde") == false);
-	table.init_iterator();
-	while (table.next_used_node(key, &value)) {
-		printf("%s %d\n", key, value);
+	for (auto iter = table.begin(); iter != table.end(); iter++) {
+		printf("%s %d\n", iter.first, *iter.second);
 	}
+	int i = 0;
 }
 
 void test_MyHash_base_type2() {
@@ -240,11 +234,8 @@ void test_MyHash_base_type2() {
 	}
 
 	// access all data in MyHash
-	table.init_iterator();
-	char key[256];
-	double value;
-	while (table.next_used_node(key, &value)) {
-		printf("%s %f\n", key, value);
+	for (auto iter = table.begin(); iter != table.end(); iter++) {
+		printf("%s %f\n", iter.first, *iter.second);
 	}
 
 	table.clear();
@@ -261,14 +252,11 @@ void test_MyHash_struct_type() {
 		strlcpy(test_person.name, name, 10);
 		test_person.age = i * i;
 		test_person.score = get_random_float(30, 100);
-		table.insert_exist_node(name);
+		table.insert_current_node(name);
 	}
 
-	table.init_iterator();
-	char key[256];
-	Person value;
-	while (table.next_used_node(key, &value)) {
-		printf("%s %d %f\n", key, value.age, value.score);
+	for (auto iter = table.begin(); iter != table.end(); iter++) {
+		printf("%s %d %f\n", iter.first, iter.second->age, iter.second->score);
 	}
 
 	table.clear();
