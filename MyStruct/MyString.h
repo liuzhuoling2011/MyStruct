@@ -9,26 +9,26 @@ class MyString
 {
 public:
 	MyString(size_t length = 256) {
-		data = (char*)malloc(length * sizeof(char));
+		data = (char*)calloc(length, sizeof(char));
 		len = 0;
 		max_size = length;
 	}
 	MyString(const char* str) {
 		len = strlen(str);
 		max_size = len * 2 + 1;
-		data = (char*)malloc(max_size * sizeof(char));
+		data = (char*)calloc(max_size, sizeof(char));
 		strlcpy(data, str, max_size);
 	}
 	MyString(MyString& str) {
 		len = str.length();
 		max_size = len * 2 + 1;
-		data = (char*)malloc(max_size * sizeof(char));
+		data = (char*)calloc(max_size, sizeof(char));
 		strlcpy(data, str.c_str(), max_size);
 	}
 	void operator= (const MyString &str) {
 		len = str.length();
 		max_size = len * 2 + 1;
-		data = (char*)malloc(max_size * sizeof(char));
+		data = (char*)calloc(max_size, sizeof(char));
 		strlcpy(data, str.c_str(), max_size);
 	} 
 	char& operator[] (size_t index) {
@@ -71,7 +71,7 @@ private:
 		}
 	}
 	void resize(size_t new_size) {
-		char* tmp = (char*)malloc(new_size * sizeof(char));
+		char* tmp = (char*)calloc(new_size, sizeof(char));
 		strlcpy(tmp, data, new_size);
 		free(data);
 		data = tmp;

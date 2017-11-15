@@ -38,8 +38,7 @@ public:
 		list_t free_link;
 		list_t used_link;
 	};
-	class Iterator {
-	public:
+	struct Iterator {
 		Iterator(){}
 		Iterator(HashNode& node) {
 			first = node.key;
@@ -67,7 +66,7 @@ public:
 		bool operator != (Iterator& iter) {
 			return m_cur_pos != iter.m_cur_pos;
 		}
-		void operator ++ (int) {
+		void operator ++ (int) {  //(*this)++
 			list_t* next = m_cur_pos->prev;
 			HashNode* node = list_entry(next, HashNode, used_link);
 			first = node->key;
@@ -82,8 +81,8 @@ public:
 public:
 	MyHash(size_t size = MAX_HASH_SIZE) {
 		m_hash_size = ROUND_UP(size);
-		m_data = (HashNode*)malloc(m_hash_size * sizeof(HashNode));
-		m_hash_head = (list_t*)malloc(m_hash_size * sizeof(list_t));
+		m_data = (HashNode*)calloc(m_hash_size, sizeof(HashNode));
+		m_hash_head = (list_t*)calloc(m_hash_size, sizeof(list_t));
 
 		clear();
 	}
@@ -98,8 +97,9 @@ public:
 	}
 
 	V& operator[] (const char* key) {
-		if(exist(key)) {
-			return at(key);
+		HashNode *l_node = query(key);
+		if (l_node != NULL) {
+			return l_node->value;
 		} else {
 			V& freenode = next_free_node();
 			insert_current_node(key);
@@ -220,14 +220,14 @@ private:
 		INIT_LIST_HEAD(&m_used_head);
 		INIT_LIST_HEAD(&m_free_head);
 
-		list_t* new_hash_head = (list_t*)malloc(2 * m_hash_size * sizeof(list_t));
+		list_t* new_hash_head = (list_t*)calloc(2 * m_hash_size, sizeof(list_t));
 		free(m_hash_head);
 		m_hash_head = new_hash_head;
 		for (size_t i = 0; i < 2 * m_hash_size; i++) {
 			INIT_LIST_HEAD(&m_hash_head[i]);
 		}
 
-		HashNode* new_data = (HashNode*)malloc(2 * m_hash_size * sizeof(HashNode));
+		HashNode* new_data = (HashNode*)calloc(2 * m_hash_size, sizeof(HashNode));
 		memcpy(new_data, m_data, m_hash_size * sizeof(HashNode));
 		free(m_data);
 		m_data = new_data;

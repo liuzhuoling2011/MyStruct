@@ -38,7 +38,7 @@ public:
 	*/
 	MyArray(size_t count = 4) {
 		m_elem_size = sizeof(T);
-		m_data = (T*)malloc(count * m_elem_size);
+		m_data = (T*)calloc(count, m_elem_size);
 		m_use_count = 0;
 		m_total_count = count;
 		m_last_pos = m_data;
@@ -48,17 +48,14 @@ public:
 		m_elem_size = other.m_elem_size;
 		m_use_count = other.m_use_count;
 		m_total_count = other.m_total_count;
-		size_t data_len = m_use_count * m_elem_size;
 
 		if (m_data != NULL) {
-			T* new_data = (T*)realloc(m_data, data_len);
-			if (new_data != m_data) {
-				m_data = new_data;
-			}
+			free(m_data);
+			m_data = (T*)calloc(m_total_count, m_elem_size);
+			memcpy(m_data, other.m_data, m_use_count * m_elem_size);
 		}
 
 		m_last_pos = m_data + m_use_count;
-		memcpy(m_data, other.m_data, data_len);
 	}
 
 	T& operator[] (size_t pos) {
@@ -79,14 +76,14 @@ public:
 	* @param[in]  count   new capacity to expan
 	*/
 	void resize(size_t count) {
-		T* new_data = (T*)realloc(m_data, count * m_elem_size);
-
-		if (new_data != m_data) {
-			m_data = new_data;
-		}
+		T* new_data = (T*)calloc(count, m_elem_size);
 		if (m_use_count > count) {
 			m_use_count = count;
 		}
+		memcpy(new_data, m_data, m_use_count * m_elem_size);
+		free(m_data);
+		m_data = new_data;
+
 		m_total_count = count;
 		m_last_pos = m_data + m_use_count;
 	}

@@ -17,7 +17,7 @@ public:
 	*/
 	MyQueue(size_t count = 64) {
 		m_elem_size = sizeof(T);
-		m_data = (T*)malloc(count * m_elem_size);
+		m_data = (T*)calloc(count, m_elem_size);
 		m_use_count = 0;
 		m_total_count = count;
 		m_first_pos = m_data;
@@ -31,7 +31,7 @@ public:
 
 		if (m_total_count < other.m_use_count) {
 			free(m_data);
-			m_data = (T*)malloc(other.m_total_count * m_elem_size);
+			m_data = (T*)calloc(other.m_total_count, m_elem_size);
 		}
 
 		m_first_pos = m_data;
@@ -112,7 +112,7 @@ private:
 	}
 
 	void resize(size_t count) {
-		T* new_data = (T*)malloc(count * m_elem_size);
+		T* new_data = (T*)calloc(count, m_elem_size);
 		memcpy(new_data, m_first_pos, m_use_count * m_elem_size);
 		free(m_data);
 		m_data = new_data;

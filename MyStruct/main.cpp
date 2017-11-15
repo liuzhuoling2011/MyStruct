@@ -16,12 +16,12 @@ void test_MyQueue();
 
 int main()
 {
-	/*test_MyArray_base_type();
-	test_MyArray_struct_type();*/
+	//test_MyArray_base_type();
+	//test_MyArray_struct_type();
 	test_MyHash_base_type();
 	//test_MyHash_base_type2();
-	/*test_MyHash_struct_type();
-	test_MyString();*/
+	//test_MyHash_struct_type();
+	//test_MyString();
 	//test_MyQueue();
 	return 0;
 }
