@@ -74,7 +74,7 @@ public:
 	/**
 	* @return  point to the next free item, recommand to use!
 	*/
-	T& next() {
+	T& get_next_free_node() {
 		expand_size();
 
 		m_use_count++;
@@ -82,7 +82,7 @@ public:
 		return *(m_last_pos - 1);
 	}
 
-	void push(const T item) {
+	void push(const T& item) {
 		expand_size();
 
 		*m_last_pos = item;

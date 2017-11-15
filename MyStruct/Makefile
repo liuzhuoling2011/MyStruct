@@ -89,7 +89,7 @@ clean:
 all: $(BIN_PATH)/$(BIN_NAME)
 	@echo "Create bin file: $(BIN_NAME) -> $<"
 	@$(RM) $(BIN_NAME)
-	@ln -s $(BIN_PATH)/$(BIN_NAME) $(BIN_NAME)
+	@cp $(BIN_PATH)/$(BIN_NAME) $(BIN_NAME)
 
 # Link the executable
 $(BIN_PATH)/$(BIN_NAME): $(OBJECTS)

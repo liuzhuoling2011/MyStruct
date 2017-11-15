@@ -148,7 +148,7 @@ public:
 	}
 
 	/*------------ Modifiers Related ------------*/
-	void insert(const char* key, V value) {
+	void insert(const char* key, const V& value) {
 		HashNode *l_node = query(key);
 		if (l_node == NULL) {
 			HashNode *l_node = get_free_node();
@@ -273,7 +273,6 @@ private:
 	}
 
 private:
-	int count_ = 0;
 	size_t  m_use_count = 0;
 	size_t  m_hash_size = 0;
 	list_t *m_cur_pos = NULL;

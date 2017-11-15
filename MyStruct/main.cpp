@@ -5,7 +5,6 @@
 #include "MyQueue.h"
 #include "test/test_common.h"
 
-void CHECK(bool flag);
 void test_MyArray_base_type();
 void test_MyArray_struct_type();
 void test_MyHash_base_type();
@@ -16,13 +15,13 @@ void test_MyQueue();
 
 int main()
 {
-	//test_MyArray_base_type();
-	//test_MyArray_struct_type();
+	test_MyArray_base_type();
+	test_MyArray_struct_type();
 	test_MyHash_base_type();
-	//test_MyHash_base_type2();
-	//test_MyHash_struct_type();
-	//test_MyString();
-	//test_MyQueue();
+	test_MyHash_base_type2();
+	test_MyHash_struct_type();
+	test_MyString();
+	test_MyQueue();
 	return 0;
 }
 
@@ -66,8 +65,7 @@ void test_MyArray_base_type() {
 	CHECK(my_test.capacity() == max_size);
 
 	for (int i = 0; i < 10; i++) {
-		int num = i * i;
-		my_test.push_back(num);
+		my_test.push_back(i * i);
 	}
 
 	print_array(my_test);
@@ -155,7 +153,7 @@ void test_MyArray_struct_type() {
 	MyArray<Person> my_test(max_size);
 
 	for (int i = 0; i < max_size; i++) {
-		Person& prn = my_test.next();
+		Person& prn = my_test.get_next_free_node();
 		char * name = get_random_char(8);
 		memcpy(prn.name, name, 10);
 		prn.age = i * i;
@@ -182,8 +180,7 @@ void test_MyHash_base_type() {
 
 	for (int i = 0; i < 10; i++) {
 		char* key = get_random_char(6);
-		int value = i * i * i;
-		table.insert(key, value);
+		table.insert(key, i * i * i);
 	}
 	CHECK(table.size() == 10);
 	table.clear();
@@ -191,8 +188,8 @@ void test_MyHash_base_type() {
 	CHECK(table.empty());
 
 	for (int i = 0; i<5; i++) {
-		char* key = "key";	 //repeat check
-		table.insert(key, i);
+		//repeat check
+		table.insert("key", i);
 	}
 	CHECK(table.size() == 1);
 
@@ -204,8 +201,7 @@ void test_MyHash_base_type() {
 
 	table["lzl"] = 5299;
 	for (int i = 0; i < 5; i++) {
-		int value = i * i;
-		table.insert(origin_data[i], value);
+		table.insert(origin_data[i], i * i);
 	}
 
 	CHECK(table.size() == 6);
@@ -219,7 +215,6 @@ void test_MyHash_base_type() {
 	for (auto iter = table.begin(); iter != table.end(); iter++) {
 		printf("%s %d\n", iter.first, *iter.second);
 	}
-	int i = 0;
 }
 
 void test_MyHash_base_type2() {
@@ -229,7 +224,7 @@ void test_MyHash_base_type2() {
 	// test expand_size
 	for (size_t i = 0; i < 4096; i++) {
 		char * l_str = get_random_char();
-		double a = i;
+		double a = (double)i;
 		table.insert(l_str, a);
 	}
 

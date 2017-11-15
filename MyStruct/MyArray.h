@@ -12,7 +12,7 @@
 *          We believe MyArray provides an unparalleled combination of performance and memory usage.
 *
 * @notice  1. Tell MyArray max size you need in constructor to avoid memory reallocated
-*          2. Recommand to use next() to get full performace
+*          2. Recommand to use get_next_free_node() to get full performace
 *          3. We should use insert && erase as little as possible, it will spent much time to move memory.
 *          4. Don't point to item in MyArray, every reallocate may make pointers invalid.
 *
@@ -134,7 +134,7 @@ public:
 	/**
 	* @return  point to the next free item, recommand to use!
 	*/
-	T& next() {
+	T& get_next_free_node() {
 		if (m_use_count >= m_total_count) {
 			resize(m_total_count << 1);
 		}
@@ -151,7 +151,7 @@ public:
 	*
 	* @param[in]  item   item to be inserted to the end of this array
 	*/
-	void push_back(const T item) {
+	void push_back(const T& item) {
 		if (m_use_count == m_total_count) {
 			resize(m_total_count << 1);
 		}
