@@ -247,7 +247,7 @@ void test_MyHash_struct_type() {
 	CHECK(table.empty());
 
 	for (int i = 0; i < max_size; i++) {
-		Person& test_person = table.next_free_node();
+		Person& test_person = table.get_next_free_node();
 		char * name = get_random_char(8);
 		strlcpy(test_person.name, name, 10);
 		test_person.age = i * i;

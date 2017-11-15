@@ -16,7 +16,7 @@
 *          We believe HashMap provides an unparalleled combination of performance and memory usage.
 *
 * @notice  1. Tell MyHash the max size you need in constructor to avoid memory reallocated
-*          2. Recommand to use next_free_node() to avoid copy object twice
+*          2. Recommand to use get_next_free_node() to avoid copy object twice
 *          4. Don't point to item in MyHash, every reallocate may make pointers invalid.
 *
 * @author  liuzhuoling
@@ -101,7 +101,7 @@ public:
 		if (l_node != NULL) {
 			return l_node->value;
 		} else {
-			V& freenode = next_free_node();
+			V& freenode = get_next_free_node();
 			insert_current_node(key);
 			return freenode;
 		}
@@ -192,7 +192,7 @@ public:
 		}
 	}
 
-	V& next_free_node() {
+	V& get_next_free_node() {
 		HashNode *l_node = get_free_node();
 		m_cur_free_node = l_node;
 		return l_node->value;
