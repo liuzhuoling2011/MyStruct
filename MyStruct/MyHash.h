@@ -219,31 +219,34 @@ private:
 		// Init hash, used, free list, and then insert previous node
 		INIT_LIST_HEAD(&m_used_head);
 		INIT_LIST_HEAD(&m_free_head);
+		size_t new_hash_size = 2 * m_hash_size;
+		m_use_count = 0;
 
-		list_t* new_hash_head = (list_t*)calloc(2 * m_hash_size, sizeof(list_t));
+		list_t* new_hash_head = (list_t*)calloc(new_hash_size, sizeof(list_t));
 		free(m_hash_head);
 		m_hash_head = new_hash_head;
-		for (size_t i = 0; i < 2 * m_hash_size; i++) {
+		for (size_t i = 0; i < new_hash_size; i++) {
 			INIT_LIST_HEAD(&m_hash_head[i]);
 		}
 
-		HashNode* new_data = (HashNode*)calloc(2 * m_hash_size, sizeof(HashNode));
+		HashNode* new_data = (HashNode*)calloc(new_hash_size, sizeof(HashNode));
 		memcpy(new_data, m_data, m_hash_size * sizeof(HashNode));
 		free(m_data);
 		m_data = new_data;
 
 		for (size_t i = 0; i < m_hash_size; i++) {
 			m_cur_free_node = &m_data[i];
+			INIT_LIST_HEAD(&m_cur_free_node->free_link);
 			insert_current_node(m_cur_free_node->key);
 		}
 
-		for (size_t i = m_hash_size; i < 2 * m_hash_size; i++) {
+		for (size_t i = m_hash_size; i < new_hash_size; i++) {
 			INIT_LIST_HEAD(&m_data[i].hash_link);
 			INIT_LIST_HEAD(&m_data[i].used_link);
 			list_add_after(&m_data[i].free_link, &m_free_head);
 		}
 
-		m_hash_size = m_hash_size << 1;
+		m_hash_size = new_hash_size;
 	}
 
 	HashNode* query(const char* key) {
