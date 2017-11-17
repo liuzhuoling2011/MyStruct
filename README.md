@@ -103,6 +103,8 @@
 		table.insert(key, i * i * i);
     }
     
+    // Attention, this iterator maybe a little different with std::map::Iterator
+    // iter is a object, and iter.second is a pointer
     for (auto iter = table.begin(); iter != table.end(); iter++) {
 		printf("%s %d\n", iter.first, *iter.second);
     }
