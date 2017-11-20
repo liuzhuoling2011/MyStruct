@@ -194,7 +194,7 @@ void test_MyHash_base_type() {
 	CHECK(table.size() == 1);
 
 	for (auto iter = table.begin(); iter != table.end(); iter++) {
-		printf("%s %d\n", iter.first, *iter.second);
+		printf("%s %d\n", iter->first, iter->second);
 	}
 
 	table.clear();
@@ -213,7 +213,7 @@ void test_MyHash_base_type() {
 	table.erase("abcde");
 	CHECK(table.exist("abcde") == false);
 	for (auto iter = table.begin(); iter != table.end(); iter++) {
-		printf("%s %d\n", iter.first, *iter.second);
+		printf("%s %d\n", iter->first, iter->second);
 	}
 }
 
@@ -230,7 +230,7 @@ void test_MyHash_base_type2() {
 
 	// access all data in MyHash
 	for (auto iter = table.begin(); iter != table.end(); iter++) {
-		printf("%s %f\n", iter.first, *iter.second);
+		printf("%s %f\n", iter->first, iter->second);
 	}
 
 	table.clear();
@@ -251,7 +251,7 @@ void test_MyHash_struct_type() {
 	}
 
 	for (auto iter = table.begin(); iter != table.end(); iter++) {
-		printf("%s %d %f\n", iter.first, iter.second->age, iter.second->score);
+		printf("%s %d %f\n", iter->first, iter->second.age, iter->second.score);
 	}
 
 	table.clear();
