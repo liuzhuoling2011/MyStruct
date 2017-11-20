@@ -1,5 +1,6 @@
 # My-Struct for C++
 #### We believe these tools provide an unparalleled combination of performance and memory usage! 
+#### Same usage as STL containers
 
 -------
 
