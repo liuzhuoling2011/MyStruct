@@ -24,8 +24,8 @@
 *
 */
 
-#define MAX_HASH_SIZE 4096
-#define HASH_KEY_SIZE 256
+#define MAX_HASH_SIZE 256
+#define HASH_KEY_SIZE 64
 #define ROUND_UP(x) (--(x), (x)|=(x)>>1, (x)|=(x)>>2, (x)|=(x)>>4, (x)|=(x)>>8, (x)|=(x)>>16, ++(x))
 
 template <class V>
