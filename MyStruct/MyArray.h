@@ -36,7 +36,7 @@ public:
 	*
 	* @param[in]  count  initial capacity
 	*/
-	MyArray(size_t count = 4) {
+	MyArray(size_t count = 64) {
 		m_elem_size = sizeof(T);
 		m_data = (T*)calloc(count, m_elem_size);
 		m_use_count = 0;
