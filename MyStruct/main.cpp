@@ -15,13 +15,13 @@ void test_MyQueue();
 
 int main()
 {
-	test_MyArray_base_type();
-	test_MyArray_struct_type();
-	test_MyHash_base_type();
+	//test_MyArray_base_type();
+	//test_MyArray_struct_type();
+	//test_MyHash_base_type();
 	test_MyHash_base_type2();
-	test_MyHash_struct_type();
-	test_MyString();
-	test_MyQueue();
+	//test_MyHash_struct_type();
+	//test_MyString();
+	//test_MyQueue();
 	return 0;
 }
 
@@ -176,7 +176,7 @@ void test_MyArray_struct_type() {
 }
 
 void test_MyHash_base_type() {
-	MyHash<int> table(30);
+	MyHash<int> table(1);
 
 	for (int i = 0; i < 10; i++) {
 		char* key = get_random_char(6);
@@ -218,9 +218,22 @@ void test_MyHash_base_type() {
 }
 
 void test_MyHash_base_type2() {
+	MyHash<Contract> contracts(1);
+	for (size_t i = 0; i < 3346; i++) {
+		Contract& instr = contracts.get_next_free_node();
+		strlcpy(instr.symbol, stock_name[i], 64);
+		contracts.insert_current_node(instr.symbol);
+	}					   
+	for (auto iter = contracts.begin(); iter != contracts.end(); iter++) {
+		printf("%s %s\n", iter->first, iter->second.symbol);
+	}
+	contracts.at("000007");
+	int i = 0;
+
 	MyHash<double> table(1);
 	CHECK(table.empty());
 
+	table.insert("liuzhuoling", 5299);
 	// test expand_size
 	for (size_t i = 0; i < 4096; i++) {
 		char * l_str = get_random_char();
@@ -235,6 +248,8 @@ void test_MyHash_base_type2() {
 
 	table.clear();
 	CHECK(table.size() == 0);
+
+	
 }
 
 void test_MyHash_struct_type() {

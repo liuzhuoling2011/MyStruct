@@ -179,10 +179,10 @@ public:
 		return l_node->second;
 	}
 
-	void insert_current_node(const char* key) {
+	void insert_current_node(const char* key, bool expand_flag = false) {
 		HashNode *l_node = query(key);
 		if (l_node == NULL) {
-			size_t hash_value = get_hash_value(key);
+			size_t hash_value = get_hash_value(key, expand_flag);
 			list_add_after(&m_cur_free_node->hash_link, &m_hash_head[hash_value]);
 			list_add_after(&m_cur_free_node->used_link, &m_used_head);
 
@@ -192,7 +192,9 @@ public:
 	}
 
 private:
-	size_t get_hash_value(const char* key) {
+	size_t get_hash_value(const char* key, bool expand_flag = false) {
+		if(expand_flag == true)
+			return my_hash_value(key) & (2 * m_hash_size - 1);
 		return my_hash_value(key) & (m_hash_size - 1);
 	}
 
@@ -218,7 +220,7 @@ private:
 		for (size_t i = 0; i < m_hash_size; i++) {
 			m_cur_free_node = &m_data[i];
 			INIT_LIST_HEAD(&m_cur_free_node->free_link);
-			insert_current_node(m_cur_free_node->first);
+			insert_current_node(m_cur_free_node->first, true);
 		}
 
 		for (size_t i = m_hash_size; i < new_hash_size; i++) {
