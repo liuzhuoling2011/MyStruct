@@ -1,10 +1,9 @@
 #ifndef __MYHASH_H__
 #define __MYHASH_H__
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <assert.h>
+#include <stdexcept> 
 #include "utils/list.h"
 #include "utils/utils.h"
 
@@ -103,8 +102,7 @@ public:
 	V& at(const char* key) {
 		HashNode *l_node = query(key);
 		if (l_node == NULL) {
-			assert(false);
-			return *((V*)NULL);
+			throw std::out_of_range("boom");
 		}
 		return l_node->second;
 	}
@@ -132,7 +130,7 @@ public:
 	void insert(const char* key, const V& value) {
 		HashNode *l_node = query(key);
 		if (l_node == NULL) {
-			HashNode *l_node = get_free_node();
+			l_node = get_free_node();
 
 			size_t hash_value = get_hash_value(key);
 			list_add_after(&l_node->hash_link, &m_hash_head[hash_value]);
