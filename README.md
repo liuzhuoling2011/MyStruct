@@ -46,12 +46,12 @@
 ```cpp
     MyArray<int> test(10);
 
-	for (int i = 0; i < 10; i++) {
-		test.push_back(i * i);
-	}
+    for (int i = 0; i < 10; i++) {
+        test.push_back(i * i);
+    }
     
     for (unsigned int i = 0; i < test.size(); i++) {
-		printf("%d ", test[i]);
+        printf("%d ", test[i]);
     }
     
     /** 
@@ -65,13 +65,13 @@
 
     MyArray<Person> my_test(16);
 
-	for (int i = 0; i < 16; i++) {
-		Person& prn = my_test.get_next_free_node();
-		char * name = get_random_char(8);
-		strlcpy(prn.name, name, 20);
-		prn.age = i * i;
-		prn.score = get_random_float(30, 100);
-	}  
+    for (int i = 0; i < 16; i++) {
+        Person& prn = my_test.get_next_free_node();
+        char * name = get_random_char(8);
+        strlcpy(prn.name, name, 20);
+        prn.age = i * i;
+        prn.score = get_random_float(30, 100);
+    }  
 ````
 
 -------
@@ -99,13 +99,13 @@
 ```cpp
     MyHash<int> table(30);
 
-	for (int i = 0; i < 10; i++) {
-		char* key = get_random_char(6);
-		table.insert(key, i * i * i);
+    for (int i = 0; i < 10; i++) {
+        char* key = get_random_char(6);
+        table.insert(key, i * i * i);
     }
     
     for (auto iter = table.begin(); iter != table.end(); iter++) {
-		printf("%s %d\n", iter->first, iter->second);
+        printf("%s %d\n", iter->first, iter->second);
     }
     
     /** 
@@ -119,12 +119,12 @@
 
     MyHash<Person> table(16);
 
-	for (int i = 0; i < 16; i++) {
+    for (int i = 0; i < 16; i++) {
         Person& test_person = table.get_next_free_node();
-		char * name = get_random_char(8);
-		strlcpy(test_person.name, name, 20);
-		test_person.age = i * i;
-		test_person.score = get_random_float(30, 100);
-		table.insert_current_node(name);
-	}  
+        char * name = get_random_char(8);
+        strlcpy(test_person.name, name, 20);
+        test_person.age = i * i;
+        test_person.score = get_random_float(30, 100);
+        table.insert_current_node(name);
+    }  
 ````
